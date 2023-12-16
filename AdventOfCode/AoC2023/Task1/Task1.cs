@@ -18,7 +18,7 @@ namespace AoC2023
 
         public async Task<List<string>> Run()
         {
-            var lines = await Utilities.ReadFile("Task1/Input1.txt");
+            var lines = await Utilities.ReadFileAsync("Task1/Input1.txt");
             var results = lines.Select(l => ExtractNumbers(l));
 
             return [results.Sum().ToString()];

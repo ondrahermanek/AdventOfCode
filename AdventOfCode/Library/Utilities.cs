@@ -4,7 +4,7 @@ namespace Library
 {
     public static class Utilities
     {
-        public static async Task<List<string>> ReadFile(string fileName)
+        public static async Task<List<string>> ReadFileAsync(string fileName)
         {
             string consoleProjectPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "AoC2023");
             string fullPath = Path.Combine(consoleProjectPath, fileName);
