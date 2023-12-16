@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FuncSharp;
 
 namespace Library
 {
@@ -10,7 +11,12 @@ namespace Library
             string fullPath = Path.Combine(consoleProjectPath, fileName);
 
             string fileContent = await File.ReadAllTextAsync(fullPath);
-            return fileContent.Split("\r\n").ToList();
+            return [.. fileContent.Split("\r\n")];
+        }
+
+        public static IReadOnlyList<T> CreateFlat<T>(params Option<IEnumerable<T>>[] values)
+        {
+            return values.Flatten().Flatten().ToReadOnlyList();
         }
     }
 }
