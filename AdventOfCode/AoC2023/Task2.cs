@@ -56,7 +56,7 @@ namespace AoC2023
                 var isValid = invalidDraws.IsEmpty();
                 if (!isValid)
                 {
-                    Console.WriteLine($"Game: {g.Id} has {invalidDraws.Count} invalid draws: {string.Join("; ", invalidDraws.Select(d => d.ToString()))}.");
+                    Console.WriteLine($"Game: {g.Id} has {invalidDraws.Count} invalid draws: {invalidDraws.Select(d => d.ToString()).MkString("; ")}.");
                 }
 
                 return isValid;
@@ -69,7 +69,7 @@ namespace AoC2023
 
         private static async Task<Game[]> GetGames(string fileName)
         {
-            var gameLogs = await Utilities.ReadFileAsync($"Task2/{fileName}");
+            var gameLogs = await Utilities.ReadFileAsync(fileName);
             var parsedGames = gameLogs.Select(ToGame).ToArray();
 
             var errors = parsedGames.Select(r => r.Error).Flatten().ToArray();
@@ -129,7 +129,7 @@ namespace AoC2023
         {
             public override string ToString()
             {
-                return $"Game: {Id}: {string.Join(";", Draws.Select(d => d.ToString()))} | Source: {Source}";
+                return $"Game: {Id}: {Draws.Select(d => d.ToString()).MkString("; ")} | Source: {Source}";
             }
         }
 
@@ -138,7 +138,7 @@ namespace AoC2023
         {
             public override string ToString()
             {
-                return string.Join(", ", GetParts());
+                return GetParts().MkString(", ");
             }
 
             private IEnumerable<string> GetParts()
