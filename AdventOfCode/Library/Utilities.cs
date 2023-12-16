@@ -10,7 +10,7 @@ namespace Library
             string fullPath = Path.Combine(consoleProjectPath, fileName);
 
             string fileContent = await File.ReadAllTextAsync(fullPath);
-            return fileContent.Split("\n").ToList();
+            return fileContent.Split("\r\n").ToList();
         }
     }
 }
