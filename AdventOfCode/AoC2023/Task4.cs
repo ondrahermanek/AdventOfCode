@@ -16,18 +16,35 @@ namespace AoC2023
         {
             var lines = await Utilities.ReadFileAsync("Input4.txt");
             var cards = ParseCards(lines);
+            var cardQuantities = cards.ToDictionary(c => c.Id, c => 1);
 
-            var cardScores = cards.Select(c =>
+            foreach (var card in cards)
+            {
+                var score = card.TicketNumbers.Intersect(card.WinningNumbers).Count();
+                var quantity = cardQuantities[card.Id];
+
+                for (var i = 1; i <= score; i++)
+                {
+                    var nexCardId = card.Id + i;
+                    cardQuantities[nexCardId] += quantity;
+                }
+
+            }
+
+            var results = cardQuantities.OrderBy(kvp => kvp.Key).Select(kvp => $"CardId {kvp.Key} - Quantity {kvp.Value}");
+            var result = cardQuantities.Values.Sum().ToString().ToEnumerable();
+
+            return results.Concat(result).ToList();
+        }
+
+        private static List<(Card Card, int Score)> ComputeScores(IReadOnlyList<Card> cards)
+        {
+            return cards.Select(c =>
             {
                 var score = c.TicketNumbers.Intersect(c.WinningNumbers).Count();
 
                 return (Card: c, Score: score == 0 ? 0 : (int)Math.Pow(2, score - 1));
             }).ToList();
-
-            var results = cardScores.Select(s => s.ToString());
-            var result = cardScores.Sum(s => s.Score).ToString().ToEnumerable();
-
-            return results.Concat(result).ToList();
         }
 
         private IReadOnlyList<Card> ParseCards(IEnumerable<string> lines)
@@ -46,10 +63,10 @@ namespace AoC2023
                 var winningNumbers = split[2].Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 if (winningNumbers.Length == 0) throw new InvalidDataException($"Winning numbers '{split[2]}' have invalid format.");
 
-                return new Card(Id: Convert.ToInt32(cardSplit[1]), TicketNumbers: ticketNumbers, WinningNumbers: winningNumbers);
+                return new Card(Id: Convert.ToInt32(cardSplit[1]), TicketNumbers: ticketNumbers, WinningNumbers: winningNumbers, Quantity: 1);
             }).ToList();
         }
 
-        private record Card(int Id, string[] TicketNumbers, string[] WinningNumbers);
+        private record Card(int Id, string[] TicketNumbers, string[] WinningNumbers, int Quantity);
     }
 }
