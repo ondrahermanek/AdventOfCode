@@ -10,7 +10,7 @@ using Library;
 
 namespace AoC2023
 {
-    internal class Task3 : IAocTask
+    internal class Task03 : IAocTask
     {
         public async Task<List<string>> Run()
         {

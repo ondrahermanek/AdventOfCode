@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 using FuncSharp;
 using Library;
 using Microsoft.VisualBasic;
-using static AoC2023.Task2;
+using static AoC2023.Task02;
 
 namespace AoC2023
 {
-    internal class Task2 : IAocTask
+    internal class Task02 : IAocTask
     {
         private static readonly Regex GameId = new("Game ([0-9]+)");
         private static readonly Regex RedCount = new("([0-9]+) red");
