@@ -18,5 +18,15 @@ namespace Library
         {
             return values.Flatten().Flatten().ToReadOnlyList();
         }
+
+        public static int[] ToInts(string line, string delimitter = "", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
+        {
+            return line.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt32(i)).ToArray();
+        }
+
+        public static long[] ToLongs(string line, string delimitter = "", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
+        {
+            return line.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt64(i)).ToArray();
+        }
     }
 }
