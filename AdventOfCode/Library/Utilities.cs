@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using FuncSharp;
 
 namespace Library
@@ -19,14 +20,19 @@ namespace Library
             return values.Flatten().Flatten().ToReadOnlyList();
         }
 
-        public static int[] ToInts(string line, string delimitter = "", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
+        public static int[] ToInts(string line, string delimitter = " ", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
         {
-            return line.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt32(i)).ToArray();
+            return line.Split(delimitter, StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt32(i)).ToArray();
         }
 
-        public static long[] ToLongs(string line, string delimitter = "", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
+        public static long[] ToLongs(string line, string delimitter = " ", StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
         {
-            return line.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt64(i)).ToArray();
+            return line.Split(delimitter, StringSplitOptions.RemoveEmptyEntries).Select(i => Convert.ToInt64(i)).ToArray();
+        }
+
+        public static int Multiply(IEnumerable<int> enumerable)
+        {
+            return enumerable.Aggregate(1, (accumulator, value) => accumulator = accumulator * value);
         }
     }
 }
