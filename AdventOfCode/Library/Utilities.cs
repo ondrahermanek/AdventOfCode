@@ -34,5 +34,15 @@ namespace Library
         {
             return enumerable.Aggregate(1, (accumulator, value) => accumulator = accumulator * value);
         }
+
+        public static void Check(bool condition, string errorMessage)
+        {
+            if (!condition) throw new InvalidOperationException(errorMessage);
+        }
+
+        public static void CheckLenght(string[] array, int lenght, string errorMessage)
+        {
+            Check(array.Length == lenght, errorMessage);
+        }
     }
 }
