@@ -7,9 +7,7 @@ namespace AoC2023
 {
     internal class Task08 : IAocTask
     {
-        private static readonly Regex NodeRegex = new Regex(@"([A-Z]{3}) = \(([A-Z]{3}), ([A-Z]{3})\)");
-        private const string StartNode = "AAA";
-        private const string EndNode = "ZZZ";
+        private static readonly Regex NodeRegex = new Regex(@"([A-Z0-9]{3}) = \(([A-Z0-9]{3}), ([A-Z0-9]{3})\)");
 
         public async Task<List<string>> Run()
         {
@@ -23,28 +21,28 @@ namespace AoC2023
 
             var stepCount = 0;
             var instructionCount = instructions.Length;
-            var currentNode = Utilities.Check(nodesByIdentifier.Get(StartNode), $"Failed to find node with '{StartNode}' identifier");
-            while (true)
+            var currentNodes = nodesByIdentifier.Where(kvp => kvp.Key.EndsWith("A")).Select(kvp => kvp.Value).ToArray();
+            while (currentNodes.Any(n => !n.Identifier.EndsWith("Z")))
             {
                 var instruction = instructions[stepCount % instructionCount];
-                var nextNodeIdentifier = instruction switch
-                {
-                    'L' => currentNode.Left,
-                    'R' => currentNode.Right,
-                    _ => throw new InvalidOperationException($"Unexpected instruction '{instruction}'.")
-                };
 
-                var nextNode = Utilities.Check(nodesByIdentifier.Get(nextNodeIdentifier), $"Failed to find node with '{nextNodeIdentifier}' identifier");
-                Console.WriteLine($"Step {stepCount}: {currentNode} => {instruction} => {nextNode}");
+                Console.WriteLine($"Step {stepCount}:");
+                var nextNodes = currentNodes.Select(n =>
+                {
+                    var nextNodeIdentifier = instruction switch
+                    {
+                        'L' => n.Left,
+                        'R' => n.Right,
+                        _ => throw new InvalidOperationException($"Unexpected instruction '{instruction}'.")
+                    };
+                    var nextNode = Utilities.Check(nodesByIdentifier.Get(nextNodeIdentifier), $"Failed to find node with '{nextNodeIdentifier}' identifier");
+                    Console.WriteLine($"\t{n} => {instruction} => {nextNode}"); 
+
+                    return nextNode;
+                }).ToArray();
 
                 ++stepCount;
-                currentNode = nextNode;
-
-                if (currentNode.Identifier == EndNode)
-                {
-                    break;
-                }
-
+                currentNodes = nextNodes;
             }
 
             return stepCount.ToString().ToEnumerable().AsList();
