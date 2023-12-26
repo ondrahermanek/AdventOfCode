@@ -44,5 +44,11 @@ namespace Library
         {
             Check(array.Length == lenght, errorMessage);
         }
+
+        public static T Check<T>(Option<T> option, string errorMessage)
+        {
+            Utilities.Check(option.NonEmpty, errorMessage);
+            return option.Get();
+        }
     }
 }
