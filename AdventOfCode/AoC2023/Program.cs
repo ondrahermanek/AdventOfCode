@@ -1,6 +1,6 @@
 ﻿using AoC2023;
 
-var task = new Task08();
+var task = new Task09();
 var result = await task.Run();
 
 Console.WriteLine($"Result:");
